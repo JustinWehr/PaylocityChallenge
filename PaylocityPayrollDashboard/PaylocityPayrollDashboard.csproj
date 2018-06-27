@@ -33,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ClassLibrary1\PaylocityComponents.csproj" />
+    <ProjectReference Include="..\PaylocityComponents\PaylocityComponents.csproj" />
     <ProjectReference Include="..\PayrollCommon\PayrollCommon.csproj" />
   </ItemGroup>
 
