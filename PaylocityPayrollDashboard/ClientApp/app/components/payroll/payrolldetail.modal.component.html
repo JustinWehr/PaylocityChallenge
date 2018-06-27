@@ -1,0 +1,35 @@
+﻿<p-dialog  [(visible)]="showCalculatedPayroll" [modal]="true" *ngIf="payrollDetail"
+          [responsive]="true" 
+          [width]="auto"
+         
+          [draggable]="false"
+          [contentStyle]="{'max-height':'500px'} ">
+    <p-header>
+        Payroll Calculation <button type="button" style="float: right" pButton icon="fa fa-times" class="ui-button-danger" (click)="close()"></button>
+    </p-header>
+    <div>
+        <p>Employee:{{ payrollDetail?.employee?.firstName + ' ' + payrollDetail?.employee?.lastName}}</p>
+        <p>Salary:${{ payrollDetail?.salary}}</p>        
+    </div>
+
+    <table class ='table' >
+        <thead>
+            <tr>
+                <th>Pay Week</th>
+                <th>Gross Pay</th>
+                <th>Deductions</th>
+                <th>Net Pay</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+            <tr *ngFor="let payline of payrollDetail.payrollLines">
+                <td>{{payline.payWeek}}</td>
+                <td>${{payline.grossPay}}</td>
+                <td>${{payline.deductions}}</td>
+                <td>${{payline.netPay}}</td>
+            </tr>
+        </tbody>
+    </table>
+    
+</p-dialog>

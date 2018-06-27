@@ -1,0 +1,40 @@
+
+<div class="ui-g">
+    <div class="ui-g-2"></div>
+    <div class="ui-g-8">
+        <h1>Employees</h1>
+
+        <div class="ui-fluid">
+            <button class="btn btn-sm btn-success" (click)="showEmployeeForm()"> Add </button>
+            <button class="btn btn-sm btn-success" (click)="showEmployeeForm(true)" [disabled]="(selectedEmployee == undefined)"> Edit </button>
+
+            <button class="btn btn-sm btn-danger" [disabled]="selectedEmployee == undefined" (click)="deleteEmployee()"> Delete Employee </button>
+
+            <button type="button" class="btn btn-sm btn-primary" (click)="calculatePayroll()" [disabled]="(selectedEmployee == undefined)">Calculate Benefit</button>
+
+            <ag-grid-angular #agGrid style="width:100%; height: 300px; margin-top:5px;"
+                             class="ag-theme-balham"
+                             [gridOptions]="gridOptions"
+                             [rowData]="rowData"
+                             [columnDefs]="columnDefs"
+                             [rowSelection]="rowSelection"
+                             (selectionChanged)="onSelectionChanged($event)"
+                             (gridReady)="onGridReady($event)">
+            </ag-grid-angular>
+        </div>
+
+        <employeeModal [display]="showEmployeeModal" 
+                       [employee]="selectedEmployee" 
+                       [edit]="editEmployee"
+                       (addedEmployee)="addEmployee($event)"
+                       (editedEmployee)="updateEmployee($event)"></employeeModal>
+        <payrollModal *ngIf="showCalculatedPayroll"
+                      [employeeId]="selectedEmployee.employeeId" 
+                      [showCalculatedPayroll] ="showCalculatedPayroll"
+                      (closedPayroll)="payrollModalClosed($event)" ></payrollModal>
+
+    </div>
+    <div class="ui-g-2"></div>
+    <!--<div class="ui-g-6" style="background-color:blue; height:400px;"></div>
+    <div class="ui-g-6" style="background-color:green; height:400px;"></div>-->
+</div>
