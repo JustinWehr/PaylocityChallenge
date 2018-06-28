@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http'
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AgGridModule } from 'ag-grid-angular';
@@ -28,6 +29,7 @@ import { PayrollService } from './components/payroll/payroll.service';
     imports: [
         CommonModule,
         HttpModule,
+        HttpClientModule,
         FormsModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,

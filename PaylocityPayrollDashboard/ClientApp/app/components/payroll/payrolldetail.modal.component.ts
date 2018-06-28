@@ -1,5 +1,5 @@
 ﻿import { Component, Input,  Output, EventEmitter } from '@angular/core';
-import { PayrollDetail } from "./payrollDetail.model";
+import { IPayrollDetail } from "./payrollDetail.model";
 import { PayrollLine } from "./payrollline.model";
 import { PayrollService } from "./payroll.service";
 
@@ -12,7 +12,7 @@ export class PayrollDetailModalComponent {
     @Input() employeeId: number;
     @Output() closedPayroll = new EventEmitter<boolean>();
 
-    public payrollDetail: PayrollDetail = new PayrollDetail;
+    public payrollDetail: IPayrollDetail;
     private showPayrollDetail: boolean = false;
 
     constructor(private payrollService: PayrollService) { }
@@ -28,7 +28,7 @@ export class PayrollDetailModalComponent {
 
         this.payrollService.CalculatePayroll(this.employeeId).subscribe(result => {
             if (result != null) {
-                this.payrollDetail = result as PayrollDetail;
+                this.payrollDetail = result as IPayrollDetail;
                 this.showPayrollDetail = true;
             }           
         }, error => console.error(error));      

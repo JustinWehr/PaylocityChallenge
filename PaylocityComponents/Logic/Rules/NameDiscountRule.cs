@@ -19,9 +19,8 @@ namespace PaylocityComponents.Logic.Rules
             {
                 return _discount;
             }
-                
-            // default to 1 if there isn't a discount.
-            return discount == 0.0m ? 1.0m : discount;
+
+            return discount;
         }
     }
 }

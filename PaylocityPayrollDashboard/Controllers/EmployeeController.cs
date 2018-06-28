@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using PalocityComponents.Logic;
+﻿using Microsoft.AspNetCore.Mvc;
 using PayrollCommon.Entities;
 using PayrollCommon.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Net;
 
 namespace PaylocityPayrollDashboard.Controllers
 {
@@ -27,24 +23,23 @@ namespace PaylocityPayrollDashboard.Controllers
         {
             try
             {
-                return this._employeeLogic.GetEmployees(); ;
+                return this._employeeLogic.GetEmployees();                
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                // this will log to cosole for now
+                throw ex;
             }
 
         }
 
         [HttpDelete("[action]")]
-        public IActionResult RemoveEmployee([FromBody] Employee employee)
+        public IActionResult RemoveEmployee([FromBody] int employeeId)
         {
             try
             {
-                this._employeeLogic.RemoveEmployee(employee);
-
-
+                this._employeeLogic.RemoveEmployee(employeeId);
+            
                 return StatusCode((int)HttpStatusCode.OK);
             }
             catch (Exception)
@@ -64,6 +59,7 @@ namespace PaylocityPayrollDashboard.Controllers
                     return StatusCode((int)HttpStatusCode.InternalServerError);
                 }
                 this._employeeLogic.AddEmployee(employee);
+
                 return StatusCode((int)HttpStatusCode.OK);
             }
             catch (Exception)
@@ -78,8 +74,13 @@ namespace PaylocityPayrollDashboard.Controllers
         {
             try
             {
-                this._employeeLogic.UpdateEmployee(employee);
 
+                if (employee == null)
+                {
+                    return StatusCode((int)HttpStatusCode.InternalServerError);
+                }
+
+                this._employeeLogic.UpdateEmployee(employee);
 
                 return StatusCode((int)HttpStatusCode.OK);
             }

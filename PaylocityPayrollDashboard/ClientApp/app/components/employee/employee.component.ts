@@ -75,13 +75,14 @@ export class EmployeeComponent implements OnInit {
         if (employee != undefined) {
 
             this.employeeService.AddEmployee(employee).subscribe(result => {
-                this.refreshEmployees();
+
+                this.closeEmployeeForm();
+                this.refreshGrid()
 
             }, error => console.error(error));
         }
 
-        this.closeEmployeeForm();
-        this.gridApi.deselectAll();
+       
     }
 
     public updateEmployee(employee: Employee) {
@@ -89,22 +90,27 @@ export class EmployeeComponent implements OnInit {
         if (employee != undefined) {
 
             this.employeeService.UpdateEmployee(employee).subscribe(result => {
-                this.refreshEmployees();
+
+                this.closeEmployeeForm();
+                this.refreshGrid();
 
             }, error => console.error(error));
         }
 
-        this.closeEmployeeForm();
-        this.gridApi.deselectAll();
     }
 
     public deleteEmployee() {
 
-        var selectedRows = this.gridApi.getSelectedRows();
+        var selectedEmployee = this.gridApi.getSelectedRows()[0] as Employee;
 
-        this.employeeService.RemoveEmployee(selectedRows[0] as Employee).subscribe(result => {
+        this.employeeService.RemoveEmployee(selectedEmployee.employeeId).subscribe(result => {
 
-            this.refreshEmployees();
+            this.refreshGrid()
+
+            if (this.gridApi.getDisplayedRowCount() == 0) {
+                this.selectedEmployee = new Employee(0, '', '', []);
+                console.log(this.selectedEmployee);
+            }
 
         }, error => console.error(error));
     }
@@ -120,6 +126,11 @@ export class EmployeeComponent implements OnInit {
             }
            
         }, error => console.error(error));
+    }
+
+    private refreshGrid() {
+        this.refreshEmployees();
+        this.gridApi.deselectAll();
     }
     
     onGridReady(params) {

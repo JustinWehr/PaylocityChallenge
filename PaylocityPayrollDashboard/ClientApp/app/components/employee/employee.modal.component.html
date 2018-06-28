@@ -6,7 +6,7 @@
     </p-header>
     <form *ngIf="display" [formGroup]="employeeFormGroup" style=" height:80%" novalidate>
 
-        <div class="form-group">
+        <div class="form-group col-sm-10">
             <label for="firstName">First Name</label>
             <input type="text"
                    class="form-control"
@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group col-sm-10">
             <label for="lastName">Last Name</label>
             <input type="text" class="form-control" formControlName="lastName" [(ngModel)]="formEmployee.lastName" required>
         </div>

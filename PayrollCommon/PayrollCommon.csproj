@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Entities\Dependant.cs" />
     <Compile Include="Entities\Employee.cs" />
+    <Compile Include="Entities\PayrollConfiguration.cs" />
     <Compile Include="Entities\PayrollDetail.cs" />
     <Compile Include="Entities\PayrollLine.cs" />
     <Compile Include="Interfaces\IEmployeeLogic.cs" />

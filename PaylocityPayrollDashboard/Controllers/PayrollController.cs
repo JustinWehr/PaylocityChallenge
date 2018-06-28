@@ -1,20 +1,21 @@
-﻿using System;
-
-using Microsoft.AspNetCore.Mvc;
-using PaylocityComponents.Logic;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using PayrollCommon.Entities;
 using PayrollCommon.Interfaces;
+using System;
 
 namespace PaylocityPayrollDashboard.Controllers
 {
     [Route("api/[controller]")]
     public class PayrollController : Controller
     {
-        private IPayrollLogic _payrollLogic { get; set; }
-        private IEmployeeLogic _employeeLogic { get; set; }
+        private readonly IConfiguration _configuration;
+        private readonly IPayrollLogic _payrollLogic;
+        private readonly IEmployeeLogic _employeeLogic;
 
-        public PayrollController(IEmployeeLogic employeeLogic, IPayrollLogic payrollLogic)
+        public PayrollController(IEmployeeLogic employeeLogic, IPayrollLogic payrollLogic, IConfiguration configuration)
         {
+            _configuration = configuration;
             _payrollLogic = payrollLogic;
             _employeeLogic = employeeLogic;
         }
@@ -24,13 +25,22 @@ namespace PaylocityPayrollDashboard.Controllers
         {
             try
             {
+                var payrollConfig = GetPayrollConfiguration();
+
                 var employee = _employeeLogic.GetEmployee(employeeId);
-                return this._payrollLogic.CalculatePayroll(employee);
+
+                return this._payrollLogic.CalculatePayroll(employee, payrollConfig);
             }
             catch (Exception ex)
             {
-                throw;
+                // this will log to cosole for now
+                throw ex;
             }
+        }
+
+        private PayrollConfiguration GetPayrollConfiguration()
+        {
+            return  _configuration.GetSection("PayrollSettings").Get<PayrollConfiguration>();          
         }
     }
 }

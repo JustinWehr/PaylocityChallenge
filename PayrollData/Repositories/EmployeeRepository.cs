@@ -26,9 +26,9 @@ namespace PayrollData.Repositories
                 DataCache.Employees.Add(employee);
         }
 
-        public void RemoveEmployee(Employee employee)
+        public void RemoveEmployee(int employeeId)
         {
-            var cacheEmployee = DataCache.Employees.Where(x => x.EmployeeId == employee.EmployeeId).FirstOrDefault();
+            var cacheEmployee = DataCache.Employees.Where(x => x.EmployeeId == employeeId).FirstOrDefault();
 
             if (cacheEmployee != null)
             {

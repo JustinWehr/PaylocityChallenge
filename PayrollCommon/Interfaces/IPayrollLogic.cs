@@ -9,6 +9,6 @@ namespace PayrollCommon.Interfaces
 {
     public interface IPayrollLogic
     {
-        PayrollDetail CalculatePayroll(Employee employee);
+        PayrollDetail CalculatePayroll(Employee employee, PayrollConfiguration payrollConfiguration);
     }
 }

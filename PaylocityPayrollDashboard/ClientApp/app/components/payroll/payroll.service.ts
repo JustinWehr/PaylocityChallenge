@@ -1,24 +1,19 @@
 ﻿import { Injectable, Inject } from '@angular/core';
-import { Http, RequestOptions, Headers, URLSearchParams } from '@angular/http';
+import { HttpClient, HttpHeaders, HttpParams  } from '@angular/common/http'
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
-import { PayrollDetail } from './payrollDetail.model'
+import { IPayrollDetail } from './payrollDetail.model'
 @Injectable()
 export class PayrollService {
 
-    constructor(private http: Http, @Inject('BASE_URL') private baseUrl: string) {
+    constructor(private httpClient: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
         
     }
 
-    public CalculatePayroll(employeeId: number): Observable<PayrollDetail> {
-        let params = new URLSearchParams();
-        params.append("employeeId", employeeId.toString())
+    public CalculatePayroll(employeeId: number): Observable<IPayrollDetail> {
 
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers, search: params });
+        const params = new HttpParams().set('employeeId', employeeId.toString());
 
-        
-        return this.http.get(this.baseUrl + 'api/Payroll/CalculatePayroll', options)
-            .map((response: any) => response.json() as PayrollDetail);
+        return this.httpClient.get<IPayrollDetail>(this.baseUrl + 'api/Payroll/CalculatePayroll', { params });
     }
 }

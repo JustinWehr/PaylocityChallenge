@@ -1,6 +1,5 @@
 ﻿import { Injectable, Inject } from '@angular/core';
-import { Http, RequestOptions, Headers } from '@angular/http';
-//import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { Employee } from './employee.model'
@@ -10,35 +9,31 @@ export class EmployeeService {
 
     private employees: Employee[] = new Array<Employee>();
 
-    constructor(private http: Http, @Inject('BASE_URL') private baseUrl: string) {
+    constructor(private httpClient: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
     }
 
-    public GetEmployees(): Observable<any>
+    public GetEmployees(): Observable<Employee[]>
     {
-        return this.http.get(this.baseUrl + 'api/Employee/GetEmployees')
-            .map((response: any) => response.json());
+        return this.httpClient.get<Employee[]>(this.baseUrl + 'api/Employee/GetEmployees');
     }
 
     public AddEmployee(employee: Employee) {
 
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
-        return this.http.post(this.baseUrl + 'api/Employee/AddEmployee', employee, options);
+        return this.httpClient.post(this.baseUrl + 'api/Employee/AddEmployee', employee);
     } 
 
     public UpdateEmployee(employee: Employee) {
 
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
-        return this.http.put(this.baseUrl + 'api/Employee/UpdateEmployee', employee, options);
+        return this.httpClient.put(this.baseUrl + 'api/Employee/UpdateEmployee', employee);
     }
 
-    public RemoveEmployee(employee: Employee) {
+    public RemoveEmployee(employeeId: number) {
 
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers, body: employee });
-        return this.http.delete(this.baseUrl + 'api/Employee/RemoveEmployee', options);
+        const httpOptions = {
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' }), body: employeeId
+        };
 
+        return this.httpClient.delete(this.baseUrl + 'api/Employee/RemoveEmployee', httpOptions);
     }
 
 }

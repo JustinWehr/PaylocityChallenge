@@ -38,7 +38,7 @@ export class EmployeeModalComponent {
         
         //recreate the form and local employee since we a reloading the dialog
         this.createForm();
-        this.formEmployee = new Employee(0, '', '', '', new Array<Dependant>());
+        this.formEmployee = new Employee(0, '', '', new Array<Dependant>());
 
         // rebuild the form if we doing an edit. 
         if (this.employee != undefined && this.edit) {

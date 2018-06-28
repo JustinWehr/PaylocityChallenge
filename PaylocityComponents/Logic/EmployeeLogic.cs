@@ -1,7 +1,6 @@
 ﻿using PayrollCommon.Entities;
 using PayrollCommon.Interfaces;
 using PayrollData.Interfaces;
-using PayrollData.Repositories;
 using System;
 using System.Collections.Generic;
 
@@ -37,14 +36,9 @@ namespace PalocityComponents.Logic
             this._data.AddEmployee(employee);
         }
 
-        public void RemoveEmployee(Employee employee)
+        public void RemoveEmployee(int employeeId)
         {
-            if (employee == null)
-            {
-                throw new ArgumentNullException(nameof(employee));
-            }
-
-            this._data.RemoveEmployee(employee);
+            this._data.RemoveEmployee(employeeId);
         }
 
         public void UpdateEmployee(Employee employee)

@@ -12,7 +12,7 @@ namespace PayrollData.Interfaces
         Employee GetEmployee(int employeeId);
         List<Employee> GetEmployees();
         void AddEmployee(Employee employee);
-        void RemoveEmployee(Employee employee);
+        void RemoveEmployee(int employeeId);
         void UpdateEmployee(Employee employee);
     }
 }

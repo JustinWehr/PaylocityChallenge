@@ -1,17 +1,12 @@
-<payrollModal [display]="showCalculatedPayroll"
-              [employeeId]="selectedEmployee?.employeeId"
-              (closedPayroll)="payrollModalClosed($event)"></payrollModal>
-
 <div class="ui-g">
     <div class="ui-g-2"></div>
     <div class="ui-g-8">
         <div class="ui-fluid">
             <button class="btn btn-sm btn-success" (click)="showEmployeeForm()"> Add </button>
-            <button class="btn btn-sm btn-success" (click)="showEmployeeForm(true)" [disabled]="selectedEmployee == undefined"> Edit </button>
+            <button class="btn btn-sm btn-success" (click)="showEmployeeForm(true)" [disabled]="selectedEmployee == undefined || selectedEmployee?.employeeId == 0"> Edit </button>
+            <button class="btn btn-sm btn-danger" (click)="deleteEmployee()" [disabled]="selectedEmployee == undefined || selectedEmployee?.employeeId == 0"> Delete Employee </button>
 
-            <button class="btn btn-sm btn-danger" (click)="deleteEmployee()" [disabled]="selectedEmployee == undefined"> Delete Employee </button>
-
-            <button type="button" class="btn btn-sm btn-primary" (click)="calculatePayroll()" [disabled]="selectedEmployee == undefined">Calculate Benefit</button>
+            <button type="button" class="btn btn-sm btn-primary" (click)="calculatePayroll()" [disabled]="selectedEmployee == undefined || selectedEmployee?.employeeId == 0">Calculate Benefit</button>
 
             <ag-grid-angular #agGrid style="width:100%; height: 300px; margin-top:5px;"
                              class="ag-theme-balham"
@@ -31,12 +26,9 @@
                        (editedEmployee)="updateEmployee($event)"
                        (closeEmployee)="closeEmployeeForm($event)"></employeeModal>
 
-        <!--<payrollModal [display]="showCalculatedPayroll"
+        <payrollModal [display]="showCalculatedPayroll"
                       [employeeId]="selectedEmployee?.employeeId" 
-                      (closedPayroll)="payrollModalClosed($event)" ></payrollModal>-->
-
+                      (closedPayroll)="payrollModalClosed($event)" ></payrollModal>
     </div>
     <div class="ui-g-2"></div>
-    <!--<div class="ui-g-6" style="background-color:blue; height:400px;"></div>
-    <div class="ui-g-6" style="background-color:green; height:400px;"></div>-->
 </div>
