@@ -26,6 +26,7 @@ namespace PaylocityPayrollDashboard
             services.AddMvc();
             services.AddTransient<IEmployeeLogic, EmployeeLogic>();
             services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+            services.AddTransient<IPayrollLogic, PayrollLogic>();
             services.AddTransient<IPayrollRuleLogic, PayrollRuleLogic>();
         }
 

@@ -18,24 +18,28 @@ namespace PayrollData.Repositories
         }
 
         public void AddEmployee(Employee employee)
-        {
-            DataCache.Employees.Add(employee);
+        { 
+                var lastEmployee = DataCache.Employees.OrderByDescending(e => e.EmployeeId).FirstOrDefault();
+
+                employee.EmployeeId = lastEmployee == null ? 1 : lastEmployee.EmployeeId + 1;
+
+                DataCache.Employees.Add(employee);
         }
 
         public void RemoveEmployee(Employee employee)
         {
             var cacheEmployee = DataCache.Employees.Where(x => x.EmployeeId == employee.EmployeeId).FirstOrDefault();
+
             if (cacheEmployee != null)
             {
                 DataCache.Employees.Remove(cacheEmployee);
             }
-            else
-                throw new Exception();
         }
 
         public void UpdateEmployee(Employee employee)
         {
             var cacheEmployee = DataCache.Employees.Where(x => x.EmployeeId == employee.EmployeeId).FirstOrDefault();
+
             if (cacheEmployee != null)
             {
                 //delete old
@@ -44,8 +48,6 @@ namespace PayrollData.Repositories
                 //add new
                 DataCache.Employees.Add(employee);
             }
-            else
-                throw new Exception();
         }
     }
 }

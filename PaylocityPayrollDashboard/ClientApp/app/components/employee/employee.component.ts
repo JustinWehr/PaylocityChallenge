@@ -16,22 +16,20 @@ export class EmployeeComponent implements OnInit {
     private gridOptions: GridOptions;
     private gridApi;
     private gridColumnApi;
+    private selectedEmployee: Employee;
+    private editEmployee: boolean = false;
+    private closeResult: string
+    public enableButtons: boolean = false;
 
     public rowData: any[];
     public rowSelection = 'single';
-    private selectedEmployee: Employee;
-    private editEmployee: boolean = false;
-    
-
-    private closeResult: string;
     public showEmployeeModal: boolean = false;
     public showCalculatedPayroll: boolean = false;
 
-    columnDefs = [
+    public columnDefs = [
         { headerName: 'Id', field: 'employeeId' },
         { headerName: 'FirstName', field: 'firstName' },
         { headerName: 'LastName', field: 'lastName' },
-        { headerName: 'Email', field: 'email' },
         {
             headerName: 'Dependants',
             valueGetter: function getDependantCount(params) {
@@ -48,27 +46,33 @@ export class EmployeeComponent implements OnInit {
         this.refreshEmployees();
     }
 
-    showEmployeeForm(isEdit: boolean = false) {
-        
+    public showEmployeeForm(isEdit: boolean = false) {
+
         this.showEmployeeModal = true;
         this.editEmployee = isEdit;
     }
 
-    calculatePayroll() {
+    public closeEmployeeForm() {
+
+        console.log(this.selectedEmployee);
+        this.showEmployeeModal = false;
+        this.editEmployee = false;
+
+    }
+
+    public payrollModalClosed(show: boolean) {
+
+        this.showCalculatedPayroll = show;
+    }
+
+    public calculatePayroll() {
 
         this.showCalculatedPayroll = true;
     }
 
-    employeeModalClosed()
-    {
-       this.showEmployeeModal = false;
-    }
+    public addEmployee(employee: Employee) {
 
-    addEmployee(employee: Employee) {
         if (employee != undefined) {
-
-            var ids = this.rowData.map(e => e.employeeId);
-            employee.employeeId = Math.max.apply(Math, ids) + 1;
 
             this.employeeService.AddEmployee(employee).subscribe(result => {
                 this.refreshEmployees();
@@ -76,27 +80,25 @@ export class EmployeeComponent implements OnInit {
             }, error => console.error(error));
         }
 
-        this.employeeModalClosed();
+        this.closeEmployeeForm();
+        this.gridApi.deselectAll();
     }
 
-    updateEmployee(employee: Employee) {
+    public updateEmployee(employee: Employee) {
 
         if (employee != undefined) {
-          
+
             this.employeeService.UpdateEmployee(employee).subscribe(result => {
                 this.refreshEmployees();
 
             }, error => console.error(error));
         }
-        this.employeeModalClosed();
+
+        this.closeEmployeeForm();
+        this.gridApi.deselectAll();
     }
 
-    payrollModalClosed(show: boolean) {
-
-        this.showCalculatedPayroll = show;
-    }
-
-    deleteEmployee() {
+    public deleteEmployee() {
 
         var selectedRows = this.gridApi.getSelectedRows();
 
@@ -104,16 +106,17 @@ export class EmployeeComponent implements OnInit {
 
             this.refreshEmployees();
 
-            }, error => console.error(error));
+        }, error => console.error(error));
     }
 
-    refreshEmployees() {
+    private refreshEmployees() {
+
         this.employeeService.GetEmployees().subscribe(result => {
-            console.log(result as Employee[]);
             this.rowData = result as Employee[];
 
             if (this.gridApi) {
-                this.gridApi.setRowData(this.rowData);  
+
+                this.gridApi.setRowData(this.rowData);                 
             }
            
         }, error => console.error(error));
@@ -126,6 +129,7 @@ export class EmployeeComponent implements OnInit {
     }
 
     onSelectionChanged() {
+
         this.selectedEmployee = this.gridApi.getSelectedRows()[0] as Employee;
     }    
 }

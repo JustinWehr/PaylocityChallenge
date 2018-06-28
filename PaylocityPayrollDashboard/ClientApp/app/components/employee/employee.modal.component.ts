@@ -16,60 +16,69 @@ export class EmployeeModalComponent {
     
     @Output() addedEmployee = new EventEmitter<Employee>();
     @Output() editedEmployee = new EventEmitter<Employee>();
+    @Output() closeEmployee = new EventEmitter<Employee>();
    
     public employeeFormGroup: FormGroup;
-    public dependants: Dependant[] = [];
-    public formEmployee: Employee = new Employee(0, '', '', '', this.dependants);
+    public firstName: FormControl;
+    public lastName: FormControl;
+    public dependants: FormArray[];
+
+    public formEmployee: Employee; 
 
     constructor(private employeeService: EmployeeService) {
-       
+        this.createForm();
     }
 
     //fires when input changes
-    ngOnChanges() {
+    public ngOnChanges() {
 
         if (!this.display) {
             return;
         }
+        
+        //recreate the form and local employee since we a reloading the dialog
+        this.createForm();
+        this.formEmployee = new Employee(0, '', '', '', new Array<Dependant>());
 
-        this.employeeFormGroup = new FormGroup({
-            firstName: new FormControl(null, Validators.required),
-            lastName: new FormControl(null, Validators.required),
-            email: new FormControl(null, [Validators.required,
-            Validators.pattern("[^ @]*@[^ @]*")]),
-            dependants: new FormArray([])
-        });
-
+        // rebuild the form if we doing an edit. 
         if (this.employee != undefined && this.edit) {
             
             this.formEmployee = this.employee;
-            this.dependants = this.formEmployee.dependants;
+            let dependants = this.formEmployee.dependants;
 
-            for (var i = 0, len = this.dependants.length; i < len; i++) {
-                this.addDependant(this.dependants[i].firstName, this.dependants[i].lastName);
+            for (var i = 0, len = dependants.length; i < len; i++) {
+                this.addDependant(dependants[i].firstName, dependants[i].lastName);
             }
         }
     }
 
-    addDependant(firstName: string, lastName: string): void {
+    private createForm() {
+        this.employeeFormGroup = new FormGroup({
+            firstName: new FormControl('', Validators.required),
+            lastName: new FormControl('', Validators.required),
+            dependants: new FormArray([])
+        });
+    }   
 
-        let dependants = this.employeeFormGroup.get('dependants') as FormArray;
+    private addDependant(firstName: string, lastName: string): void {
+
+        let dependants = this.employeeFormGroup.controls.dependants as FormArray;
         dependants.push(this.createDependant(firstName, lastName));
     }
 
-    createDependant(firstName: string, lastName: string): FormGroup {
+    private createDependant(firstName: string, lastName: string): FormGroup {
         return new FormGroup({
-            firstName: new FormControl(firstName, Validators.required),
-            lastName: new FormControl(lastName, Validators.required),
+            firstName: new FormControl(firstName),
+            lastName: new FormControl(lastName) 
         });
     }
 
-    removeDependant(index: number) {
-        let dependants = this.employeeFormGroup.get('dependants') as FormArray;
+    private removeDependant(index: number) {
+        let dependants = this.employeeFormGroup.controls.dependants as FormArray;
         dependants.removeAt(index);
     } 
 
-    addEmployee() {
+    public addEmployee() {
 
         if (this.employeeFormGroup.valid) {
 
@@ -78,7 +87,7 @@ export class EmployeeModalComponent {
         }
     }
 
-    editEmployee() {
+    public editEmployee() {
 
         if (this.employeeFormGroup.valid) {
 
@@ -87,27 +96,13 @@ export class EmployeeModalComponent {
         }
     }
 
-    buildEmployeeDependants(): void {
+    private buildEmployeeDependants(): void {
 
-        this.formEmployee.dependants = this.employeeFormGroup.controls['dependants'].value as Dependant[];       
+        this.formEmployee.dependants = this.employeeFormGroup.controls.dependants.value as Dependant[];       
     }
+    
+    public close() {
 
-    //setForm() {
-    //    this.employeeFormGroup.patchValue({
-    //        firstName: this.employee.firstName,
-    //        lastName: this.employee.lastName,
-    //        email: this.employee.email
-    //    })
-
-    //    for (var i = 0, len = this.employee.dependants.length; i < len; i++) {
-    //        console.log(this.employee.dependants[i].name);
-    //        this.addDependant(this.employee.dependants[i].name);
-    //    }
-    //}
-
-    close() {
-
-        this.employeeFormGroup.reset();
-        this.addedEmployee.emit(undefined);
+        this.closeEmployee.emit();
     }
 }

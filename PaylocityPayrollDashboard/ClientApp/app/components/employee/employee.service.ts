@@ -20,14 +20,14 @@ export class EmployeeService {
     }
 
     public AddEmployee(employee: Employee) {
-        console.log('made It add service method');
+
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
         return this.http.post(this.baseUrl + 'api/Employee/AddEmployee', employee, options);
     } 
 
     public UpdateEmployee(employee: Employee) {
-        console.log('made It update service method');
+
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
         return this.http.put(this.baseUrl + 'api/Employee/UpdateEmployee', employee, options);

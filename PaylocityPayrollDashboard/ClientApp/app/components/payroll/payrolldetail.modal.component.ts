@@ -1,4 +1,4 @@
-﻿import { Component, Input, AfterViewInit, Output, EventEmitter } from '@angular/core';
+﻿import { Component, Input,  Output, EventEmitter } from '@angular/core';
 import { PayrollDetail } from "./payrollDetail.model";
 import { PayrollLine } from "./payrollline.model";
 import { PayrollService } from "./payroll.service";
@@ -7,8 +7,8 @@ import { PayrollService } from "./payroll.service";
     selector: 'payrollModal',
     templateUrl: './payrolldetail.modal.component.html'
 })
-export class PayrollDetailModalComponent implements AfterViewInit {
-    @Input() showCalculatedPayroll: boolean;
+export class PayrollDetailModalComponent {
+    @Input() display: boolean = false;
     @Input() employeeId: number;
     @Output() closedPayroll = new EventEmitter<boolean>();
 
@@ -17,8 +17,11 @@ export class PayrollDetailModalComponent implements AfterViewInit {
 
     constructor(private payrollService: PayrollService) { }
 
-    ngAfterViewInit() {
-        this.calculateBenefits();  
+    public ngOnChanges() {
+
+        if (this.display) {
+           this.calculateBenefits();  
+        }
     }
 
     calculateBenefits(){
@@ -32,7 +35,6 @@ export class PayrollDetailModalComponent implements AfterViewInit {
     }
 
     close() {  
-        console.log('Test payroll close');
         this.closedPayroll.emit(false);
     }
 }

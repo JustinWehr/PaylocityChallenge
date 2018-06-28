@@ -10,12 +10,12 @@ namespace PaylocityPayrollDashboard.Controllers
     [Route("api/[controller]")]
     public class PayrollController : Controller
     {
-        private PayrollLogic _payrollLogic { get; set; }
-        private IEmployeeLogic _employeeLogic { get; set; }       
+        private IPayrollLogic _payrollLogic { get; set; }
+        private IEmployeeLogic _employeeLogic { get; set; }
 
-        public PayrollController(IEmployeeLogic employeeLogic, IPayrollRuleLogic payrollLogic)
+        public PayrollController(IEmployeeLogic employeeLogic, IPayrollLogic payrollLogic)
         {
-            _payrollLogic = new PayrollLogic(payrollLogic);
+            _payrollLogic = payrollLogic;
             _employeeLogic = employeeLogic;
         }
 
@@ -24,11 +24,8 @@ namespace PaylocityPayrollDashboard.Controllers
         {
             try
             {
-                using (var logic = _employeeLogic)
-                {
-                    var employee = logic.GetEmployee(employeeId);
-                    return  this._payrollLogic.CalculatePayroll(employee);
-                }
+                var employee = _employeeLogic.GetEmployee(employeeId);
+                return this._payrollLogic.CalculatePayroll(employee);
             }
             catch (Exception ex)
             {

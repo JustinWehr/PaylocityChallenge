@@ -4,57 +4,61 @@
     <p-header>
         Employee Details <button type="button" style="float: right" pButton icon="fa fa-times" class="ui-button-danger" (click)="close()"></button>
     </p-header>
-    <form *ngIf="display" [formGroup]="employeeFormGroup" style=" height:80%">
+    <form *ngIf="display" [formGroup]="employeeFormGroup" style=" height:80%" novalidate>
 
-        <div class="form-group"
-             [ngClass]="{
-                            'has-danger': !employeeFormGroup.get('firstName').valid &&
-                                         (employeeFormGroup.get('firstName').dirty ||
-                                          employeeFormGroup.get('firstName').touched),
-                            'has-success': employeeFormGroup.get('firstName').valid &&
-                                          (employeeFormGroup.get('firstName').dirty ||
-                                           employeeFormGroup.get('firstName').touched)}">
+        <div class="form-group">
             <label for="firstName">First Name</label>
             <input type="text"
                    class="form-control"
                    formControlName="firstName"
                    required [(ngModel)]="formEmployee.firstName">
         </div>
+        <div *ngIf="employeeFormGroup.controls.firstName.invalid &&
+                            (employeeFormGroup.controls.firstName.dirty || employeeFormGroup.controls.firstName.touched)"
+             class="alert alert-danger">
+
+            <div *ngIf="employeeFormGroup.controls.firstName.errors.required">
+                First Name Required.
+            </div>
+
+        </div>
 
         <div class="form-group">
             <label for="lastName">Last Name</label>
-            <input type="text" class="form-control" formControlName="lastName" required [(ngModel)]="formEmployee.lastName">
+            <input type="text" class="form-control" formControlName="lastName" [(ngModel)]="formEmployee.lastName" required>
+        </div>
+        <div *ngIf="employeeFormGroup.controls.lastName.invalid &&
+                            (employeeFormGroup.controls.lastName.dirty || employeeFormGroup.controls.lastName.touched)"
+             class="alert alert-danger">
+
+            <div *ngIf="employeeFormGroup.controls.lastName.errors.required">
+                Last Name Required.
+            </div>
         </div>
 
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="text" class="form-control" formControlName="email" [(ngModel)]="formEmployee.email">
-        </div>
+        <div formArrayName="dependants" class="form-group"
+             *ngFor="let dependant of employeeFormGroup.get('dependants').controls; let i = index;">
 
-
-            <div formArrayName="dependants" class="form-group"
-                 *ngFor="let dependant of employeeFormGroup.get('dependants').controls; let i = index;">
-                
-                <div [formGroupName]="i" >
-                    <label for="i">Dependant {{i + 1}}</label>
-                    <div class="form-row">
-                        <div class="col-5">
-                            <input type="text" class="form-control" formControlName="firstName" placeholder="First Name">
-                        </div>
-                        <div class="col-6">
-                            <input type="text" class="form-control" formControlName="lastName" placeholder="Last Name">
-                        </div>
-                        <div class="col-1">
-                            <button type="button" (click)="removeDependant(i)" pButton icon="fa fa-times" class="ui-button-danger"></button>
-                        </div>
+            <div [formGroupName]="i">
+                <label for="i">Dependant {{i + 1}}</label>
+                <div class="form-row">
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" formControlName="firstName" placeholder="First Name">
+                    </div>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" formControlName="lastName" placeholder="Last Name">
+                    </div>
+                    <div class="col-1">
+                        <button type="button" (click)="removeDependant(i)" pButton icon="fa fa-times" class="ui-button-danger btn-lg"></button>
                     </div>
                 </div>
             </div>
+        </div>
     </form>
 
     <p-footer>
         <button type="button" class="btn btn-primary" (click)="addDependant()">Add Dependant</button>
-        <button *ngIf="!edit" type="submit" class="btn btn-success" (click)="addEmployee()">Add Employee</button>
-        <button *ngIf="edit" type="submit" class="btn btn-success" (click)="editEmployee()">Edit Employee</button>
+        <button *ngIf="!edit" type="submit" class="btn btn-success" (click)="addEmployee()" [disabled]="employeeFormGroup?.invalid">Save</button>
+        <button *ngIf="edit" type="submit" class="btn btn-success" (click)="editEmployee()" [disabled]="employeeFormGroup?.invalid">Save</button>
     </p-footer>
 </p-dialog> 

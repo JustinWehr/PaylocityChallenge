@@ -46,6 +46,7 @@
     <Compile Include="Entities\PayrollLine.cs" />
     <Compile Include="Interfaces\IEmployeeLogic.cs" />
     <Compile Include="Interfaces\IPayrollDiscountRule.cs" />
+    <Compile Include="Interfaces\IPayrollLogic.cs" />
     <Compile Include="Interfaces\IPayrollRuleLogic.cs" />
     <Compile Include="Interfaces\IPerson.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

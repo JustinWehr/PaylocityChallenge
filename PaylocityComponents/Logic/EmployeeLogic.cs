@@ -9,7 +9,7 @@ namespace PalocityComponents.Logic
 {
     public class EmployeeLogic : IEmployeeLogic
     {
-        private IEmployeeRepository _data;
+        private readonly IEmployeeRepository _data;
 
         public EmployeeLogic(IEmployeeRepository employeeRepository)
         {
@@ -28,22 +28,34 @@ namespace PalocityComponents.Logic
 
         public void AddEmployee(Employee employee)
         {
+            if (employee == null)
+            {
+                throw new ArgumentNullException(nameof(employee));
+
+            }
+
             this._data.AddEmployee(employee);
         }
 
         public void RemoveEmployee(Employee employee)
         {
+            if (employee == null)
+            {
+                throw new ArgumentNullException(nameof(employee));
+            }
+
             this._data.RemoveEmployee(employee);
         }
 
         public void UpdateEmployee(Employee employee)
         {
-            this._data.UpdateEmployee(employee);
-        }
+            if (employee == null)
+            {
+                throw new ArgumentNullException(nameof(employee));
 
-        public void Dispose()
-        {
-            this._data = null;
+            }
+
+            this._data.UpdateEmployee(employee);
         }
     }
 }
