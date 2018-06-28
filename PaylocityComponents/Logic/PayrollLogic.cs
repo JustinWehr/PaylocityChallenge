@@ -25,8 +25,6 @@ namespace PaylocityComponents.Logic
                 throw new ArgumentNullException(nameof(employee));
             }
 
-
-
             var payLines = CreatePayrollLines(employee);
 
             var totaDeductions = Math.Round(payLines.Select(p => p.Deductions).ToList().Sum());

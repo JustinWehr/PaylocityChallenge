@@ -81,8 +81,6 @@ export class EmployeeComponent implements OnInit {
 
             }, error => console.error(error));
         }
-
-       
     }
 
     public updateEmployee(employee: Employee) {
@@ -96,7 +94,6 @@ export class EmployeeComponent implements OnInit {
 
             }, error => console.error(error));
         }
-
     }
 
     public deleteEmployee() {
