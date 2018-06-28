@@ -42,11 +42,9 @@ namespace PayrollData.Repositories
 
             if (cacheEmployee != null)
             {
-                //delete old
-                DataCache.Employees.Remove(cacheEmployee);
-
-                //add new
-                DataCache.Employees.Add(employee);
+                cacheEmployee.FirstName = employee.FirstName;
+                cacheEmployee.LastName = employee.LastName;
+                cacheEmployee.Dependants = employee.Dependants;
             }
         }
     }

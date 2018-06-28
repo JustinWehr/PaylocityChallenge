@@ -68,8 +68,8 @@ export class EmployeeModalComponent {
 
     private createDependant(firstName: string, lastName: string): FormGroup {
         return new FormGroup({
-            firstName: new FormControl(firstName),
-            lastName: new FormControl(lastName) 
+            firstName: new FormControl(firstName, Validators.required),
+            lastName: new FormControl(lastName, Validators.required) 
         });
     }
 

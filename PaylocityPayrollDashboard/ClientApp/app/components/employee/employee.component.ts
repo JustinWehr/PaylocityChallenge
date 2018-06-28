@@ -90,7 +90,7 @@ export class EmployeeComponent implements OnInit {
             this.employeeService.UpdateEmployee(employee).subscribe(result => {
 
                 this.closeEmployeeForm();
-                this.refreshGrid();
+                this.refreshEmployees();
 
             }, error => console.error(error));
         }
