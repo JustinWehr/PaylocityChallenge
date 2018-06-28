@@ -1,3 +1,6 @@
+<payrollModal [display]="showCalculatedPayroll"
+              [employeeId]="selectedEmployee?.employeeId"
+              (closedPayroll)="payrollModalClosed($event)"></payrollModal>
 
 <div class="ui-g">
     <div class="ui-g-2"></div>
@@ -28,9 +31,9 @@
                        (editedEmployee)="updateEmployee($event)"
                        (closeEmployee)="closeEmployeeForm($event)"></employeeModal>
 
-        <payrollModal [display]="showCalculatedPayroll"
+        <!--<payrollModal [display]="showCalculatedPayroll"
                       [employeeId]="selectedEmployee?.employeeId" 
-                      (closedPayroll)="payrollModalClosed($event)" ></payrollModal>
+                      (closedPayroll)="payrollModalClosed($event)" ></payrollModal>-->
 
     </div>
     <div class="ui-g-2"></div>

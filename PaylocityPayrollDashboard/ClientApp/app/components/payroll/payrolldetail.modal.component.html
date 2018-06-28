@@ -1,9 +1,10 @@
 ﻿<p-dialog  [(visible)]="display" [modal]="true" *ngIf="payrollDetail"
           [responsive]="true" 
           [width]="auto"
-         
+          [closeOnEscape]="false"
           [draggable]="false"
-          [contentStyle]="{'max-height':'500px'} ">
+          [contentStyle]="{'max-height':'500px'} "
+          [positionTop]="40">
     <p-header>
         Payroll Calculation <button type="button" style="float: right" pButton icon="fa fa-times" class="ui-button-danger" (click)="close()"></button>
     </p-header>
